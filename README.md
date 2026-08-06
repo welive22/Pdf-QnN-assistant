@@ -1,9 +1,10 @@
 # PDF Question Answering Assistant (RAG)
 
 **Name:** EB Fathima Suhana
+
 **MUID:** fathimasuhana@mulearn
 
-**Deployment Link:** 
+**Deployment Link:** https://pdf-qnn-assistant-fngwj2pykdptveu7fejeln.streamlit.app/
 
 ## Project Overview
 
@@ -13,19 +14,19 @@ Built it with Streamlit for a clean chat-style interface, and deployed on Stream
 
 ## Technologies Used
 
-- **Streamlit** — for the interface (file upload + chatbot)
+- **Streamlit** - for the interface (file upload + chatbot)
 
-- **LangChain** — to wire everything together (loading, splitting, retrieval, memory, the chain itself)
+- **LangChain** - to wire everything together (loading, splitting, retrieval, memory, the chain itself)
 
-- **PyPDFLoader** — to load and read the uploaded pdf
+- **PyPDFLoader** - to load and read the uploaded pdf
 
-- **RecursiveCharacterTextSplitter** — splits the pdf text into overlapping chunks (1000 characters, 150 overlap) so the model gets manageable pieces of context instead of the whole document at once
+- **RecursiveCharacterTextSplitter** - splits the pdf text into overlapping chunks (1000 characters, 150 overlap) so the model gets manageable pieces of context instead of the whole document at once
 
-- **Sentence Transformers** (`all-MiniLM-L6-v2`) — turns each chunk into an embedding vector, runs locally so no API dependency
+- **Sentence Transformers** (`all-MiniLM-L6-v2`) - turns each chunk into an embedding vector, runs locally so no API dependency
 
-- **ChromaDB** — stores the embeddings and does the similarity search to find relevant chunks for a given question
+- **ChromaDB** - stores the embeddings and does the similarity search to find relevant chunks for a given question
 
-- **Groq API** (llama-3.3-70b-versatile, Free Tier) — the actual LLM that generates the answer, using the retrieved chunks as context
+- **Groq API** (llama-3.3-70b-versatile, Free Tier) - the actual LLM that generates the answer, using the retrieved chunks as context
 
 ## Memory Implementation
 
@@ -35,11 +36,11 @@ Each uploaded PDF gets its own vector store (stored in a separate temp folder), 
 
 ## Challenges Faced
 
-- Had version compatibility issues between different LangChain packages (langchain, langchain-community, langchain-huggingface) — some of the classes I first tried using like `ConversationBufferMemory` and `ConversationalRetrievalChain` are being phased out in the newest LangChain versions, so had to pin specific versions in requirements.txt that still support them properly instead of just using the latest of everything.
+- Had version compatibility issues between different LangChain packages (langchain, langchain-community, langchain-huggingface) - some of the classes I first tried using like `ConversationBufferMemory` and `ConversationalRetrievalChain` are being phased out in the newest LangChain versions, so had to pin specific versions in requirements.txt that still support them properly instead of just using the latest of everything.
 
-- Ran into dependency conflicts on Hugging Face Spaces with `huggingface-hub` versions clashing between `transformers`, `gradio`, and `chromadb`. Switched to Streamlit Community Cloud to avoid this entirely — Streamlit has a much simpler and more reliable dependency resolution on their platform.
+- Ran into dependency conflicts on Hugging Face Spaces with `huggingface-hub` versions clashing between `transformers`, `gradio`, and `chromadb`. Switched to Streamlit Community Cloud to avoid this entirely - Streamlit has a much simpler and more reliable dependency resolution on their platform.
 
-- Getting the chunk size right took some trial — too small and the model loses context across chunks, too big and it wastes tokens / slows down retrieval. Went with 1000 characters with some overlap as a reasonable middle ground.
+- Getting the chunk size right took some trial - too small and the model loses context across chunks, too big and it wastes tokens / slows down retrieval. Went with 1000 characters with some overlap as a reasonable middle ground.
 
 - Making sure a new PDF upload doesn't just add onto the previous one's vector store, so it needed a fresh vector store per upload instead of reusing the same one.
 

@@ -27,6 +27,9 @@ from langchain.chains import ConversationalRetrievalChain
 # Disable LangSmith telemetry
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
 
+# Read API key from Streamlit secrets (hides it from the UI)
+groq_api_key = st.secrets["GROQ_API_KEY"]
+
 # Model settings
 MODEL_NAME = "llama-3.3-70b-versatile"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
@@ -107,12 +110,6 @@ st.markdown(
 # Sidebar
 with st.sidebar:
     st.header("Settings")
-    groq_api_key = st.text_input(
-        "Groq API Key",
-        type="password",
-        placeholder="Paste your Groq API key here",
-        help="Get a free key at https://console.groq.com/keys",
-    )
     uploaded_file = st.file_uploader("Upload a PDF", type=["pdf"])
     process_btn = st.button("Process PDF", type="primary", use_container_width=True)
 
